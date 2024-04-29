@@ -12,11 +12,16 @@ const submitModalBtn = $('#saveTask')
 let titleInput = $('#task-title')
 let dateInput = $('#task-due-date')
 let descriptionInput = $('#task-description')
-const tasks = [];
+const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+//drag and drop
+const draggables = document.querySelectorAll('.task-card');
+const droppables = document.querySelectorAll('.swim-droppable');
 
 //basic modal functionality
-addTaskBtn.on('click', () => $('#formModal').modal('show'))
-closeModalBtn.on('click', () => $('#formModal').modal('hide'))
+addTaskBtn.on('click', () => $('#formModal').modal('show'));
+closeModalBtn.on('click', () => $('#formModal').modal('hide'));
+
 
 //pushing new tasks to the array
 const addTask = (title, date, description) => {
@@ -25,11 +30,17 @@ const addTask = (title, date, description) => {
         date,
         description,
     });
-    return {title, date, description};
-}
 
+    localStorage.setItem("tasks", JSON.stringify(tasks))
+
+    return {title, date, description};
+};
+
+//adding the card format
 const createTaskCard = ({title, date, description}) => {
     const taskDiv = document.createElement('div');
+    taskDiv.setAttribute('draggable', 'true');
+    taskDiv.setAttribute('class', 'task-card')
     const taskName = document.createElement('h3');
     const taskDate = document.createElement('p');
     const taskDesc = document.createElement('p');
@@ -40,58 +51,67 @@ const createTaskCard = ({title, date, description}) => {
 
     taskDiv.append(taskName, taskDate, taskDesc);
     taskContainer.append(taskDiv);
-}
+};
 
-tasks.forEach(createTaskCard)
+tasks.forEach(createTaskCard);
 
 //putting the form input on the card when form is submitted
-submitModalBtn.addEventListener('click', () => {
+submitModalBtn.on('click', (event) => {
+    event.preventDefault();
+
+    // console.log('the task was submitted')
     const newTask = addTask(
-        titleInput.value,
-        dateInput.value,
-        descriptionInput.value,
+        titleInput.val(),
+        dateInput.val(),
+        descriptionInput.val()
     );
     
-    createTaskCard(newTask)
+    $('#formModal').modal('hide');
 
-    //clear the input every time
-    titleInput.value = "";
-    dateInput.value = "";
-    descriptionInput.value = ""
-})
-
-
-
-
-// Todo: create a function to generate a unique task id
-function generateTaskId() {
-
-}
-
-// Todo: create a function to create a task card
-
-
-// Todo: create a function to render the task list and make cards draggable
-function renderTaskList() {
-
-}
-
-// Todo: create a function to handle adding a new task
-function handleAddTask(event){
-   
-}
-
-// Todo: create a function to handle deleting a task
-function handleDeleteTask(event){
-
-}
-
-// Todo: create a function to handle dropping a task into a new status lane
-function handleDrop(event, ui) {
-
-}
-
-// Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
-$(document).ready(function () {
-
+    createTaskCard(newTask);
 });
+
+
+//drag and drop styling and functionality
+draggables.forEach(draggable => {
+    draggable.addEventListener('dragstart', () => {
+        // console.log('is dragging')
+        task.classList.add('is-dragging')
+    });
+    draggable.addEventListener('dragend', () => {
+        task.classList.remove('is-dragging')
+    });
+});
+
+droppables.forEach(droppable => {
+    droppable.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        const lastTask = insertAboveTask(droppable, event.clientY);
+        console.log(lastTask);
+        const currentDraggable = document.querySelector('.is-dragging')
+        droppable.appendChild(currentDraggable);      
+    });
+});
+
+const insertAboveTask = (droppable, mouseY) => {
+    const draggableEl = [...droppable.querySelectorAll('.draggable:not(.is-dragging')];
+    
+    return draggableEl.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box-height / 2;
+        console.log(box);
+        if (offset < 0 && offset > closest.offset) {
+            return{ offset: offset, element: child }
+        } else {
+            return closest;
+        }
+    }, { offset: Number.NEGATIVE_INFINITY } ).element
+
+}
+
+
+//todo: 
+//put the tasks in new droppables
+//add the date picker
+//find out if the task is due soon or overdue
+//add delete option

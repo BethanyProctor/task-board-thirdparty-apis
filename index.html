@@ -49,12 +49,14 @@
                 <h2 for="taskDescription" class="col-form-label">Task Discription:</h2>
                 <input type="text" class="form-control" id="task-description" name="description">
               </div>
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Close</button>
+              <button type="submit" class="btn btn-primary" id="saveTask">Create Task</button>
+            </div>
             </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Close</button>
-            <button type="button" class="btn btn-primary" id="saveTask">Create Task</button>
-          </div>
+
         </div>
       </div>
     </div>
@@ -66,34 +68,24 @@
           <div class="card-header bg-white">
             <h2 class="card-title mb-1">To Do</h2>
           </div>
-          <div class="card-body bg-light">
+          <div class="card-body bg-light swim-droppable">
             <div id="todo-cards">
 
-              <!--card template:
-              
-              div
-                <h3>Task Title:</h3>
-                  p>title input from local storage</p
-                <h3>Task Due Date:</h3>
-                  p>date input from local storage</p
-                <h3>Task Desc:</h3>
-                  p>desc input from local storage</p
-              /div
-              
-              -->
-
+              <!-- cards will spawn here -->
 
             </div>
           </div>
         </div>
       </div>
       <div class="col-12 col-lg-4 d-flex">
-        <div id="in-progress" class="card border-light mb-3 lane flex-grow-1">
+        <div id="in-progress" class="card border-light mb-3 lane flex-grow-1 ">
           <div class="card-header bg-white">
             <h2 class="card-title mb-1">In Progress</h2>
           </div>
-          <div class="card-body bg-light">
-            <div id="in-progress-cards"></div>
+          <div class="card-body bg-light swim-droppable">
+            <div id="in-progress-cards">
+              <!-- be able to drop cards here -->
+            </div>
           </div>
         </div>
         </div>
@@ -102,8 +94,10 @@
             <div class="card-header bg-white">
               <h2 class="card-title mb-1">Done</h2>
             </div>
-            <div class="card-body bg-light">
-              <div id="done-cards"></div>
+            <div class="card-body bg-light swim-droppable">
+              <div id="done-cards">
+                <!-- be able to drop cards here -->
+              </div>
           </div>
           </div>
       </div>

@@ -9,8 +9,23 @@ body {
 
 .task-card {
   margin: 0 auto;
+  background-color: lightgray;
+  box-shadow: 10px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
 }
 
 .task-card:hover {
   cursor: grab;
+}
+
+.draggable.is-dragging {
+  opacity: 50%;
+}
+
+.due-soon {
+  background-color: yellow;
+}
+
+.over-due {
+  background-color: red;
 }
