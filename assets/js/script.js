@@ -71,47 +71,33 @@ submitModalBtn.on('click', (event) => {
     createTaskCard(newTask);
 });
 
+//drag and drop functionality
+$(document).ready(function () {
+    $('.task-card').draggable();
+    $('.swim-droppable').droppable({
+        accept: '.draggable',
+        drop: handleDrop,
+    })
+})
 
-//drag and drop styling and functionality
-draggables.forEach(draggable => {
-    draggable.addEventListener('dragstart', () => {
-        // console.log('is dragging')
-        task.classList.add('is-dragging')
-    });
-    draggable.addEventListener('dragend', () => {
-        task.classList.remove('is-dragging')
-    });
-});
+//datepicker
+$(function(){
+    $("#task-due-date").datepicker();
+})
 
-droppables.forEach(droppable => {
-    droppable.addEventListener('dragover', (event) => {
-        event.preventDefault();
-        const lastTask = insertAboveTask(droppable, event.clientY);
-        console.log(lastTask);
-        const currentDraggable = document.querySelector('.is-dragging')
-        droppable.appendChild(currentDraggable);      
-    });
-});
+const dueDateColor = () => {
+    if (dateInput.val().isBefore(dayjs())) {
+        
+    } else if (dateInput.val().isSame(dayjs())) {
 
-const insertAboveTask = (droppable, mouseY) => {
-    const draggableEl = [...droppable.querySelectorAll('.draggable:not(.is-dragging')];
-    
-    return draggableEl.reduce((closest, child) => {
-        const box = child.getBoundingClientRect();
-        const offset = y - box.top - box-height / 2;
-        console.log(box);
-        if (offset < 0 && offset > closest.offset) {
-            return{ offset: offset, element: child }
-        } else {
-            return closest;
-        }
-    }, { offset: Number.NEGATIVE_INFINITY } ).element
+    } else (dateInput.val().isAfter(dayjs())) {
 
+    };
 }
 
-
+console.log(dueDateColor)
 //todo: 
-//put the tasks in new droppables
-//add the date picker
+//fix the draggables from going behind the droppables
+
 //find out if the task is due soon or overdue
 //add delete option
