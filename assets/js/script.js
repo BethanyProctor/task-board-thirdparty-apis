@@ -1,7 +1,3 @@
-// Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks"));
-let nextId = JSON.parse(localStorage.getItem("nextId"));
-
 //modal form and local storage
 const formModal = $('#formModal')
 const taskContainer = $('#todo-cards')
@@ -43,17 +39,35 @@ const createTaskCard = ({title, date, description}) => {
     taskDiv.setAttribute('class', 'task-card')
     const taskName = document.createElement('h3');
     const taskDate = document.createElement('p');
+    const taskDateInput = document.createElement('p');
+    taskDateInput.setAttribute('id', 'taskDateInput')
     const taskDesc = document.createElement('p');
+    const deleteBtn = document.createElement('button')
+    deleteBtn.setAttribute('id', 'deleteBtn')
 
     taskName.innerText = "Task Title: " + title;
-    taskDate.innerText = "Task Due Date: " + date;
+    taskDate.innerText = "Task Due Date: "
+    taskDateInput.innerText = date;
     taskDesc.innerText = "Task Description: " + description;
+    deleteBtn.innerText = "Delete Task"
 
-    taskDiv.append(taskName, taskDate, taskDesc);
+    taskDiv.append(taskName, taskDate, taskDateInput, taskDesc, deleteBtn);
     taskContainer.append(taskDiv);
 };
 
 tasks.forEach(createTaskCard);
+
+
+//delete btn
+const deleteBtns = document.getElementById('deleteBtn')
+
+deleteBtns.forEach((button) => {
+    button.addEventListener('click', () => { 
+        button.parentElement.remove();
+        localStorage.removeItem()
+    })
+})
+
 
 //putting the form input on the card when form is submitted
 submitModalBtn.on('click', (event) => {
@@ -76,28 +90,32 @@ $(document).ready(function () {
     $('.task-card').draggable();
     $('.swim-droppable').droppable({
         accept: '.draggable',
-        drop: handleDrop,
     })
 })
+
 
 //datepicker
 $(function(){
     $("#task-due-date").datepicker();
 })
 
+
+//determine if the task is due soon or overdue and change styling
+const taskDateInput = document.getElementById('taskDateInput').value
+const parsedUserDate = dayjs(taskDateInput);
+console.log(parsedUserDate)
+
 const dueDateColor = () => {
-    if (dateInput.val().isBefore(dayjs())) {
-        
-    } else if (dateInput.val().isSame(dayjs())) {
-
-    } else (dateInput.val().isAfter(dayjs())) {
-
+    draggables.forEach((draggable) => {
+        if (parsedUserDate.isAfter(dayjs())) {
+        draggable.setAttribute('class', 'over-due')
+    } else if (parsedUserDate.isSame(dayjs())) {
+        draggable.setAttribute('class','due-soon')
+    } else {
+        console.log('the task is not due soon')
     };
+    })
+    
 }
 
-console.log(dueDateColor)
-//todo: 
-//fix the draggables from going behind the droppables
-
-//find out if the task is due soon or overdue
-//add delete option
+dueDateColor();

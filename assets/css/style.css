@@ -12,16 +12,22 @@ body {
   background-color: lightgray;
   box-shadow: 10px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
+  z-index: 1000;
 }
 
 .task-card:hover {
   cursor: grab;
 }
 
+#deleteBtn {
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
 .due-soon {
-  background-color: yellow;
+  background-color: rgb(240, 240, 147);
 }
 
 .over-due {
-  background-color: red;
+  background-color: lightcoral;
 }
